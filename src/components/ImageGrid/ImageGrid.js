@@ -13,13 +13,14 @@ class ImageGrid extends Component {
   };
 
   componentDidMount() {
-    fetch(`https://api.unsplash.com/photos/?client_id=${key}&per_page=28`)
-      .then(res => res.json())
-      .then(images => {
-        this.setState({
-          images,
-        });
-      });
+    this.props.loadImages()
+    // fetch(`https://api.unsplash.com/photos/?client_id=${key}&per_page=28`)
+    //   .then(res => res.json())
+    //   .then(images => {
+    //     this.setState({
+    //       images,
+    //     });
+    //   });
   }
 
   render() {
