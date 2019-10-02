@@ -1,4 +1,4 @@
-import { IMAGES } from '../constants';
+import { IMAGES, STATS } from '../constants';
 
 const loadImages = () => (dispatch) => {
   dispatch({
@@ -16,8 +16,37 @@ const setImages = (images) => (dispatch) => {
 const setError = (error) => (dispatch) => {
   dispatch({
     type: IMAGES.LOAD_FAIL,
-    error
+    payload: error
   })
 };
 
-export { loadImages, setImages, setError };
+const loadImageStats = (id) => (dispatch) => {
+  dispatch({
+    type: STATS.LOAD,
+    id
+  })
+};
+
+const setImageStats = (id, downloads) => (dispatch) => {
+  dispatch({
+    type: STATS.LOAD_SUCCESS,
+    id,
+    downloads
+  })
+};
+
+const setImageStatsError = (id) => (dispatch) => {
+  dispatch({
+    type: STATS.LOAD_FAIL,
+    id
+  })
+};
+
+export {
+  loadImages,
+  setImages,
+  setError,
+  loadImageStats,
+  setImageStats,
+  setImageStatsError
+};

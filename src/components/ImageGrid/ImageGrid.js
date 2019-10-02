@@ -1,31 +1,41 @@
 import React, {Component} from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 
 import { loadImages } from '../../actions';
+import Button from '../Button';
 
 import './styles.css';
-
-const key = '5f96323678d05ff0c4eb264ef184556868e303b32a2db88ecbf15746e6f25e02';
+import {withRouter} from "react-router";
 
 class ImageGrid extends Component {
-  state = {
-    images: [],
+  componentDidMount() {
+    this.setHashUrl();
+    this.props.loadImages()
   };
 
-  componentDidMount() {
-    this.props.loadImages()
-    // fetch(`https://api.unsplash.com/photos/?client_id=${key}&per_page=28`)
-    //   .then(res => res.json())
-    //   .then(images => {
-    //     this.setState({
-    //       images,
-    //     });
-    //   });
-  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.nextPage !== this.props.nextPage) {
+      this.setHashUrl();
+    }
+  };
+
+  componentWillUnmount() {
+    this.removeHashUrl();
+  };
+
+  setHashUrl() {
+    const pageNumber = this.props.nextPage === 0 ? 1 : this.props.nextPage - 1;
+    return window.location.hash = pageNumber;
+  };
+
+  removeHashUrl() {
+    return window.location.href.split('#')[0];
+  };
 
   render() {
-
-    const { images, error } = this.props;
+    const { images, error, isLoading, loadImages } = this.props;
+    const errorMessage = error ? (<div className="error">{JSON.stringify(error)}</div>) : null;
 
     return (
       <div className="content">
@@ -43,17 +53,24 @@ class ImageGrid extends Component {
               />
             </div>
           ))}
-          <button onClick={this.props.loadImages}>Load images</button>
         </section>
-        {error && <div>{JSON.stringify(error)}</div>}
+        {errorMessage}
+        <Button
+          onClick={() => !isLoading && loadImages()}
+          loading={isLoading}>
+          Load More
+        </Button>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ isLoading, images, error }) => ({ isLoading, images, error });
+const mapStateToProps = ({ isLoading, images, error, nextPage, router }) => ({ isLoading, images, error, nextPage, router });
 const mapDispatchToProp = {
   loadImages
 };
 
-export default connect(mapStateToProps, mapDispatchToProp)(ImageGrid);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProp)
+)(ImageGrid);

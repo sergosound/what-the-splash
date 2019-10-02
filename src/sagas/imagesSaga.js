@@ -10,11 +10,10 @@ function* handleImagesLoad() {
   try {
     const page = yield select(getPage);
     const images = yield call(fetchImages, page);
-    yield console.log('a', images);
     yield put(setImages(images));
-    yield console.log('s', images);
-
-  } catch (error) {
+  }
+  catch (error) {
+    console.log('rrrrr', error.toString());
     yield put(setError(error.toString()));
   }
 }
