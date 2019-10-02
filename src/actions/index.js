@@ -9,7 +9,7 @@ const loadImages = () => (dispatch) => {
 const setImages = (images) => (dispatch) => {
   dispatch({
     type: IMAGES.LOAD_SUCCESS,
-    images
+    payload: images
   })
 };
 

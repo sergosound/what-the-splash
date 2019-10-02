@@ -6,7 +6,7 @@ const fetchImages = async (page) => {
   const data = await res.json();
 
   if (res.status >= 400) {
-    throw new Error('error', data.errors);
+    throw new Error(data.errors);
   }
 
   return data;
