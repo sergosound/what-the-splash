@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 
 import { loadImages } from '../../actions';
 import Button from '../Button';
+import Stats from '../Stats';
 
 import './styles.css';
-import {withRouter} from "react-router";
 
 class ImageGrid extends Component {
   componentDidMount() {
@@ -34,7 +35,7 @@ class ImageGrid extends Component {
   };
 
   render() {
-    const { images, error, isLoading, loadImages } = this.props;
+    const { images, error, isLoading, loadImages, imageStats } = this.props;
     const errorMessage = error ? (<div className="error">{JSON.stringify(error)}</div>) : null;
 
     return (
@@ -47,6 +48,7 @@ class ImageGrid extends Component {
                 image.height / image.width,
               )}`}
             >
+              <Stats stats={imageStats[image.id]} />
               <img
                 src={image.urls.small}
                 alt={image.user.username}
@@ -65,7 +67,14 @@ class ImageGrid extends Component {
   }
 }
 
-const mapStateToProps = ({ isLoading, images, error, nextPage, router }) => ({ isLoading, images, error, nextPage, router });
+const mapStateToProps = ({ isLoading, images, error, nextPage, router, imageStats }) => ({
+  isLoading,
+  images,
+  error,
+  nextPage,
+  router,
+  imageStats
+});
 const mapDispatchToProp = {
   loadImages
 };

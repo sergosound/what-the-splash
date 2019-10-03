@@ -4,7 +4,7 @@ import { IMAGES } from '../constants';
 import { fetchImages } from '../api';
 import { setImages, setError } from '../actions';
 
-const getPage = state => state.nextPage;
+export const getPage = state => state.nextPage;
 
 function* handleImagesLoad() {
   try {
